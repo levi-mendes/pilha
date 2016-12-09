@@ -1,56 +1,77 @@
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class TestePilha {
 
+	private Pilha mPilha;
+	
+	@Before
+	public void init() {
+		mPilha = new Pilha(10);
+	}
 	@Test
 	public void pilhaVazia() {
-		Pilha p = new Pilha();
-		assertTrue(p.estaVazia());
-		assertEquals(0, p.tamanho());
+		assertTrue(mPilha.estaVazia());
+		assertEquals(0, mPilha.tamanho());
 	}
 	
 	@Test
 	public void empilhaUmElemento() {
-		Pilha p = new Pilha();
 		String item = "Primeiro elemento";
 		
-		p.empilhar(item);
-		assertFalse(p.estaVazia());
-		assertEquals(1, p.tamanho());
-		assertEquals(item, p.topo());
+		mPilha.empilhar(item);
+		assertFalse(mPilha.estaVazia());
+		assertEquals(1, mPilha.tamanho());
+		assertEquals(item, mPilha.topo());
 	}
 	
 	@Test
 	public void empilhaDoisElementos() {
-		Pilha p = new Pilha();
 		String elemento1 = "Primeiro elemento";
 		String elemento2 = "Segundo elemento";
 		
-		p.empilhar(elemento1);
-		p.empilhar(elemento2);
+		mPilha.empilhar(elemento1);
+		mPilha.empilhar(elemento2);
 		
-		assertEquals(2, p.tamanho());
-		assertEquals(elemento2, p.topo());
+		assertEquals(2, mPilha.tamanho());
+		assertEquals(elemento2, mPilha.topo());
 	}
 	
 	@Test
 	public void empilhaEDesempilha() {
-		Pilha p = new Pilha();
 		String elemento1 = "Primeiro elemento";
 		String elemento2 = "Segundo elemento";
 		
-		p.empilhar(elemento1);
-		p.empilhar(elemento2);
+		mPilha.empilhar(elemento1);
+		mPilha.empilhar(elemento2);
 		
-		assertEquals(2, p.tamanho());
-		assertEquals(elemento2, p.topo());
+		assertEquals(2, mPilha.tamanho());
+		assertEquals(elemento2, mPilha.topo());
 		
-		Object desempilhado = p.desempilhar();
+		Object desempilhado = mPilha.desempilhar();
 		
-		assertEquals(1, p.tamanho());
+		assertEquals(1, mPilha.tamanho());
 		assertEquals(elemento2, desempilhado);
-		assertEquals(elemento1, p.topo());
+		assertEquals(elemento1, mPilha.topo());
+	}
+	
+	@Test(expected = PilhaVaziaException.class)
+	public void removeDaPilhaVazia(){
+		mPilha.desempilhar();
+	}
+	
+	@Test
+	public void adicionaNaPilhaCheia(){
+		for (int cont = 0; cont < 10; cont++) {
+			mPilha.empilhar("item " + cont);
+		}
+		
+		try {
+			mPilha.empilhar("BOOOOMMMM - item extra");
+			fail();
+		} catch (PilhaCheiaException e){}
+		
 	}
 }

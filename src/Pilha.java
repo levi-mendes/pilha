@@ -1,9 +1,13 @@
 
 public class Pilha {
 
-	private Object[] mElementos = new Object[20];
+	private Object[] mElementos;
 	private int mQtde;
 	
+	public Pilha(int qtde) {
+		mElementos = new Object[qtde];
+	}
+
 	public boolean estaVazia() {		
 		return mQtde == 0;
 	}
@@ -13,6 +17,10 @@ public class Pilha {
 	}
 
 	public void empilhar(String item) {
+		if (mQtde == mElementos.length) {
+			throw new PilhaCheiaException("A pilha já está cheia");
+		}
+		
 		mElementos[mQtde] = item;
 		mQtde++;
 	}
@@ -22,6 +30,10 @@ public class Pilha {
 	}
 
 	public Object desempilhar() {
+		if (estaVazia()) {
+			throw new PilhaVaziaException("Pilha vazia !!!");
+		}
+		
 		Object topo = topo();
 		mQtde--;
 		
